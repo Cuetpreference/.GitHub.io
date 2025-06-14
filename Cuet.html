@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DU Preference Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+    header {
+      background-color: #002147;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .popup-content i {
+      font-size: 40px;
+      color: green;
+    }
+    .close-btn {
+      margin-top: 15px;
+      display: inline-block;
+      background: #dc3545;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DELHI UNIVERSITY</h1>
+    <p>Fill the Preference Form below</p>
+  </header>
+  <div class="container">
+    <form id="preferenceForm">
+      <label>Name</label>
+      <input type="text" name="name" required>
+
+      <label>Phone Number</label>
+      <input type="tel" name="phone" required>
+
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>School</label>
+      <input type="text" name="school">
+
+      <label>12th Class Stream</label>
+      <select name="stream" required>
+        <option>Science (Medical)</option>
+        <option>Science (Non-Medical)</option>
+        <option>Commerce</option>
+        <option>Humanities</option>
+        <option>Other</option>
+      </select>
+
+      <label>Year of School Graduation</label>
+      <select name="graduation_year" required>
+        <option>2025</option>
+        <option>2024</option>
+        <option>2023</option>
+        <option>2022</option>
+      </select>
+
+      <label>Gender</label>
+      <select name="gender" required>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Transgender</option>
+      </select>
+
+      <label>Apply for Girls College (Only for Female)</label>
+      <select name="girls_college">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>1st Preference</label>
+      <select name="preference1" required>
+        <option>BSC (H) Computer Science</option>
+      </select>
+
+      <label>2nd Preference</label>
+      <select name="preference2" required>
+        <option>BSC (H) Physics</option>
+      </select>
+
+      <label>3rd Preference</label>
+      <select name="preference3" required>
+        <option>BSC (H) Chemistry</option>
+      </select>
+
+      <label>4th Preference</label>
+      <select name="preference4" required>
+        <option>BSC (H) Mathematics</option>
+      </select>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <i class="fas fa-check-circle"></i>
+      <p>Thank you for your time! We sent your preference on your email & mobile number.</p>
+      <div class="close-btn" onclick="document.getElementById('popup').style.display='none'">Close</div>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    document.getElementById("preferenceForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const botToken = "7552678302:AAExXPTLv_tPfvvfHsfu1Qmja0245obQhfU";
+      const chatId = "5165964724";
+
+      const formData = new FormData(this);
+      let message = "📝 *New CUET Preference Form Submission*%0A";
+      formData.forEach((value, key) => {
+        message += `*${key}*: ${value}%0A`;
+      });
+
+      fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${message}&parse_mode=Markdown`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("popup").style.display = "flex";
+        })
+        .catch(error => {
+          alert("❌ Something went wrong. Try again.");
+          console.error("Telegram Error:", error);
+        });
+    });
+  </script>
+</body>
+</html>
